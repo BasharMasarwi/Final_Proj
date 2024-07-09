@@ -2,8 +2,9 @@ import cartModel from "../../../DB/model/cart.model.js";
 import orderModel from "../../../DB/model/order.model.js";
 import couponModel from "../../../DB/model/coupon.model.js";
 import userModel from "../../../DB/model/user.model.js";
-
-export const createOrder = async(req, res) => {
+import Stripe from "stripe";
+const stripe = new Stripe (process.env.STRIPE_SECRET_KEY);
+export const createOrder = async(req, res) => { 
     const {couponName} = req.body;
     const cart =  await cartModel.findOne({userId:req.user._id});
     if(!cart || cart.products.length === 0) {
@@ -69,7 +70,19 @@ export const createOrder = async(req, res) => {
 
 
     if(order){
-
+        const invoice = {
+            shipping: {
+              name: user.userName,
+              address: order.Address,
+              phone:order.phoneNumber
+            },
+            items: order.products,
+            subtotal: order.finalPrice,
+           
+            invoice_nr: order._id
+          };
+          
+          createInvoice(invoice, "invoice.pdf");
         for(const product of req.body.products){
             await productModel.findOneAndUpdate({_id:product.productId},
                 {

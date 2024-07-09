@@ -19,6 +19,10 @@ export const createCart = async (req, res) => {
   await cart.save();
   return res.json({ message: "success", cart });
 };
+export const getCart = async (req, res) => {
+  const cart = await cartModel.findOne({ userId: req.user._id });
+  return res.json({ message: "success", cart });
+}
 export const removeItem = async (req, res) => {
   const { productId } = req.params;
   const cart = await cartModel.findOneAndUpdate(

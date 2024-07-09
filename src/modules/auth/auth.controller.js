@@ -9,21 +9,22 @@ export const register = async (req, res) => {
   if (user) {
     return res.status(409).json({ message: "user already exist" });
   }
-  const hashedPassword = bcrypt.hashSync(
-    password,
-    parseInt(process.env.SALTROUND)
-  );
-  const createUser = await userModel.create({
-    userName,
-    email,
-    password: hashedPassword,
-  });
+  const hashedPassword = await bcrypt.hash(password, parseInt(process.env.SALTROUND));
+    const createUser = await userModel.create({ userName, email, password: hashedPassword });
 
-  await sendEmail(email, "Verify Email", `<h2>Hello ${userName}</h2>`);
-  return res
-    .status(201)
-    .json({ message: "user created successfully", user: createUser });
+    const token =  jwt.sign({email},process.env.CONFIRMEMAILSECRET);
+
+    await sendEmail(email, 'Welcome', userName, token);
+
+    return res.status(201).json({ message: "success", user: createUser });
 };
+export const confirmEmail = async (req, res) => {
+  const token = req.params.token;
+  const decoded = jwt.verify(token,process.env.CONFIRMEMAILSECRET);
+  await userModel.findOneAndUpdate({ email: decoded.email},{confirmEmail:true});
+  return res.status(200).json({ message: "success"});
+};
+
 export const login = async (req, res) => {
   const { email, password } = req.body;
   const user = await userModel.findOne({ email });

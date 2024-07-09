@@ -7,6 +7,7 @@ import authRouter from './modules/auth/auth.router.js';
 import couponRouter from './modules/coupon/coupon.router.js';
 import orderRouter from './modules/order/order.router.js';
 import reviewRouter from './modules/review/review.router.js';
+import userRouter from './modules/user/user.router.js';
 const initApp =(app , express) => {
     connectDB();
     app.use(express.json());
@@ -21,6 +22,7 @@ const initApp =(app , express) => {
     app.use('/coupon', couponRouter);
     app.use('/order', orderRouter);
     app.use('/review',reviewRouter);
+    app.use('/user',userRouter);
     app.use('*', (req, res) => {
         return res.status(404).json({ message: "page not found" });
     })
