@@ -1,4 +1,4 @@
-import userModel from "../../DB/model/User.model.js";
+import userModel from "../../DB/model/user.model.js";
 import { AppError } from "../utls/AppError.js";
 
 export const checkEmail = async(req,res,next)=>{
