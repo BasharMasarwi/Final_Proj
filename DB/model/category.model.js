@@ -32,11 +32,5 @@ const categorySchema = new Schema(
     },
   }
 );
-
-categorySchema.virtual("subcategory", {
-  localField: "_id",
-  foreignField: "categoryId",
-  ref: "Subcategory ",
-}); //                                                    ----------------------
 const categoryModel = model("Category", categorySchema);
 export default categoryModel;

@@ -11,14 +11,14 @@ export const create = async (req, res) => {
   const { secure_url, public_id } = await cloudinary.uploader.upload(
     req.file.path,
     {
-      folder: "BasharShop/categories",
+      folder: "AnimeCommunity/categories",
     }
   );
   req.body.image = { secure_url, public_id };
   req.body.createdBy = req.user._id;
   req.body.updatedBy = req.user._id;
   const category = await categoryModel.create(req.body);
-  return res.json({ message: category });
+  return res.json({ message: "success", category });
 };
 
 export const getAll = async (req, res) => {
@@ -78,12 +78,6 @@ export const destroy = async(req,res)=> {
 
   return res.status(200).json({message:"success",category});
 };
-
-
-
-
-
-
 export const deleteCategory = async (req, res) => {
   const category = await categoryModel.findByIdAndDelete(req.params.id);
   if (!category) {

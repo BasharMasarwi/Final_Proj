@@ -1,13 +1,11 @@
 import { Router } from "express";
 import * as Controller from "./category.controller.js";
 import fileUpload, { fileType } from "../../utls/multer.js";
-import subcategoriesRouter from './../subcategory/subcategory.router.js';
 import { auth } from "../../middleware/auth.js";
 import { endPoints } from "./category.role.js";
 const router = Router({caseSensitive: true});
 
 
-router.use('/:id/subcategory',subcategoriesRouter)
 router.post("/",auth(endPoints.create),fileUpload(fileType.image).single("image"),Controller.create);
 router.get("/",auth(endPoints.getAll),Controller.getAll);
 router.get("/active",Controller.getActive);

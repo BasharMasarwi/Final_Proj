@@ -1,7 +1,7 @@
 import { Router } from "express";
 import * as Controller from "./user.controller.js";
 import { auth } from "../../middleware/auth.js";
-import { endPoints } from "./user.role.js";
+import { endPoints } from "./user.endPoints.js";
 
 const router = Router();
 

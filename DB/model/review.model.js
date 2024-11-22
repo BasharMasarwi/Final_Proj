@@ -1,4 +1,4 @@
-import { Schema, Types, model } from "mongoose";
+import mongoose, { Schema, Types, model } from "mongoose";
 
 
 const reviewSchema = new Schema({
@@ -17,9 +17,9 @@ const reviewSchema = new Schema({
         ref:'User',
         required: true
     },
-    productId:{
+    animeId:{
         type: Types.ObjectId,
-        ref:'Product',
+        ref:'Anime',
         required: true
     },
     image: {
